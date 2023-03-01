@@ -10,7 +10,16 @@ function Header() {
     handleFilters,
     order,
     setOrder,
+    filterOptions,
   } = useContext(StarWarsContext);
+
+  const columns = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
   return (
     <form>
       <h1>Star wars Planet Search - Trybe</h1>
@@ -27,11 +36,11 @@ function Header() {
         data-testid="column-filter"
         onChange={ handleFormData }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {columns.filter(filterOptions).map(
+          (column) => (
+            <option key={ column } value={ column }>{column}</option>
+          ),
+        )}
       </select>
       <select
         name="comparison"
@@ -59,11 +68,11 @@ function Header() {
         value={ order.column }
         onChange={ (e) => setOrder({ ...order, [e.target.name]: e.target.value }) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {columns.map(
+          (column) => (
+            <option key={ column } value={ column }>{column}</option>
+          ),
+        )}
       </select>
       <input
         name="order"
@@ -81,15 +90,6 @@ function Header() {
         data-testid="column-sort-input-desc"
         onChange={ (e) => setOrder({ ...order, sort: e.target.value }) }
       />
-      <button data-testid="column-sort-button">Ordernar</button>
-      {/* <div>
-        {selectedFilters && selectedFilters.map(
-          (filter) => (
-            <p key={ filter.column } data-testid="filter">
-              {`${filter.column} ${filter.comparison} ${filter.value}`}
-            </p>),
-        )}
-      </div> */}
     </form>
   );
 }

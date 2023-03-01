@@ -16,6 +16,8 @@ function Provider({ children }) {
     sort: 'ASC',
   });
 
+  const [hasFiltered, setHasFiltered] = useState(false);
+
   const handleFormData = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -32,18 +34,20 @@ function Provider({ children }) {
       (planet) => planet.name.toLowerCase().includes(searchInput.toLowerCase()),
     );
     const filteredPlanetConditions = filteredPlanet.filter((planet) => {
-      const userFilters = selectedFilters.map(({ column, comparison, value }) => {
-        switch (comparison) {
-        case 'maior que':
-          return Number(planet[column]) > Number(value);
-        case 'menor que':
-          return Number(planet[column]) < Number(value);
-        case 'igual a':
-          return Number(planet[column]) === Number(value);
-        default:
-          return true;
-        }
-      });
+      const userFilters = selectedFilters.map(
+        ({ column, comparison, value }) => {
+          switch (comparison) {
+          case 'maior que':
+            return Number(planet[column]) > Number(value);
+          case 'menor que':
+            return Number(planet[column]) < Number(value);
+          case 'igual a':
+            return Number(planet[column]) === Number(value);
+          default:
+            return true;
+          }
+        },
+      );
       return userFilters.every((el) => el);
     });
 
@@ -52,6 +56,7 @@ function Provider({ children }) {
 
   const handleFilters = (e) => {
     e.preventDefault();
+    setHasFiltered(true);
     setSelectedFilters([...selectedFilters, formData]);
     setFormData({
       column: 'population',
@@ -60,22 +65,28 @@ function Provider({ children }) {
     });
   };
 
-  const sortColumns = (a, b) => {
-    const one = 1;
-    const { column, sort } = order;
-    if (column !== 'population') {
-      if (sort === 'ASC') {
-        return Number(a[column]) - Number(b[column]);
-      } if (sort === 'DESC') {
-        return (Number(a[column]) - Number(b[column])) * (-one);
-      }
-    }
-    if (sort === 'ASC') {
-      return (a[column] > b[column]) ? one : -one;
-    } if (sort === 'DESC') {
-      return (a[column] < b[column]) ? one : -one;
-    }
-  };
+  // const sortColumns = (a, b) => {
+  //   const one = 1;
+  //   const { column, sort } = order;
+  //   if (column !== 'population') {
+  //     if (sort === 'ASC') {
+  //       return Number(a[column]) - Number(b[column]);
+  //     }
+  //     if (sort === 'DESC') {
+  //       return (Number(a[column]) - Number(b[column])) * -one;
+  //     }
+  //   }
+  //   if (sort === 'ASC') {
+  //     return a[column] > b[column] ? one : -one;
+  //   }
+  //   if (sort === 'DESC') {
+  //     return a[column] < b[column] ? one : -one;
+  //   }
+  // };
+
+  const filterOptions = (option) => !selectedFilters.find(
+    (filter) => option === filter.column,
+  );
 
   const context = {
     planets,
@@ -87,7 +98,8 @@ function Provider({ children }) {
     handleFilters,
     order,
     setOrder,
-    sortColumns,
+    hasFiltered,
+    filterOptions,
   };
 
   return (
