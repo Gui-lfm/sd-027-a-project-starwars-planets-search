@@ -101,6 +101,8 @@ function Provider({ children }) {
     setSelectedFilters(selectedFilters.filter((filter) => filter !== selectedFilter));
   };
 
+  // remove todos os filtros numéricos
+
   const removeAllFilters = (e) => {
     e.preventDefault();
     setSelectedFilters([]);
