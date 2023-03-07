@@ -4,19 +4,21 @@ import StarWarsContext from './StarWarsContext';
 
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
+
   const [searchInput, setSearchInput] = useState('');
+
   const [formData, setFormData] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
+
   const [selectedFilters, setSelectedFilters] = useState([]);
+
   const [order, setOrder] = useState({
     column: 'population',
     sort: 'ASC',
   });
-
-  const [hasFiltered, setHasFiltered] = useState(false);
 
   const handleFormData = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -28,6 +30,19 @@ function Provider({ children }) {
       .then((data) => data.results)
       .then((info) => setPlanets(info.map(({ residents, ...rest }) => ({ ...rest }))));
   }, []);
+
+  // const sortColumns = (a, b) => {
+  //   const one = 1;
+  //   const { column, sort } = order;
+  //   if (sort === 'ASC') {
+  //     return a[column] > b[column] ? one : -one;
+  //   }
+  //   if (sort === 'DESC') {
+  //     return a[column] < b[column] ? one : -one;
+  //   }
+  // };
+
+  // renderiza a lista de planetas e atualiza de acordo com os filtros selecionados
 
   const searchPlanet = () => {
     const filteredPlanet = planets.filter(
@@ -54,9 +69,16 @@ function Provider({ children }) {
     return filteredPlanetConditions;
   };
 
+  // handler dos inputs de ordenação da lista
+
+  const handleSortOrder = (event) => {
+    setOrder({ ...order, [event.target.name]: event.target.value });
+  };
+
+  // salva em um array o estado do formulário responsável pelo filtro selecionado
+
   const handleFilters = (e) => {
     e.preventDefault();
-    setHasFiltered(true);
     setSelectedFilters([...selectedFilters, formData]);
     setFormData({
       column: 'population',
@@ -65,28 +87,24 @@ function Provider({ children }) {
     });
   };
 
-  // const sortColumns = (a, b) => {
-  //   const one = 1;
-  //   const { column, sort } = order;
-  //   if (column !== 'population') {
-  //     if (sort === 'ASC') {
-  //       return Number(a[column]) - Number(b[column]);
-  //     }
-  //     if (sort === 'DESC') {
-  //       return (Number(a[column]) - Number(b[column])) * -one;
-  //     }
-  //   }
-  //   if (sort === 'ASC') {
-  //     return a[column] > b[column] ? one : -one;
-  //   }
-  //   if (sort === 'DESC') {
-  //     return a[column] < b[column] ? one : -one;
-  //   }
-  // };
+  // implementa a lógica que impede o uso de filtros repetidos
 
   const filterOptions = (option) => !selectedFilters.find(
     (filter) => option === filter.column,
   );
+
+  // remove o filtro numérico selecionado
+
+  const removeSelectedFilter = (e) => {
+    e.preventDefault();
+    const selectedFilter = selectedFilters[e.target.id];
+    setSelectedFilters(selectedFilters.filter((filter) => filter !== selectedFilter));
+  };
+
+  const removeAllFilters = (e) => {
+    e.preventDefault();
+    setSelectedFilters([]);
+  };
 
   const context = {
     planets,
@@ -98,8 +116,11 @@ function Provider({ children }) {
     handleFilters,
     order,
     setOrder,
-    hasFiltered,
     filterOptions,
+    handleSortOrder,
+    selectedFilters,
+    removeSelectedFilter,
+    removeAllFilters,
   };
 
   return (

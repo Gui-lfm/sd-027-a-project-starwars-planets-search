@@ -9,8 +9,11 @@ function Header() {
     handleFormData,
     handleFilters,
     order,
-    setOrder,
     filterOptions,
+    handleSortOrder,
+    selectedFilters,
+    removeSelectedFilter,
+    removeAllFilters,
   } = useContext(StarWarsContext);
 
   const columns = [
@@ -66,7 +69,7 @@ function Header() {
         name="column"
         data-testid="column-sort"
         value={ order.column }
-        onChange={ (e) => setOrder({ ...order, [e.target.name]: e.target.value }) }
+        onChange={ handleSortOrder }
       >
         {columns.map(
           (column) => (
@@ -75,21 +78,48 @@ function Header() {
         )}
       </select>
       <input
-        name="order"
+        name="sort"
         value="ASC"
         type="radio"
         checked={ order.sort === 'ASC' }
         data-testid="column-sort-input-asc"
-        onChange={ (e) => setOrder({ ...order, sort: e.target.value }) }
+        onChange={ handleSortOrder }
       />
       <input
-        name="order"
+        name="sort"
         value="DESC"
         type="radio"
         checked={ order.sort === 'DESC' }
         data-testid="column-sort-input-desc"
-        onChange={ (e) => setOrder({ ...order, sort: e.target.value }) }
+        onChange={ handleSortOrder }
       />
+      <button
+        data-testid="column-sort-button"
+        onClick={ (e) => {
+          e.preventDefault();
+        } }
+      >
+        Ordenar
+      </button>
+      <button
+        data-testid="button-remove-filters"
+        onClick={ removeAllFilters }
+      >
+        Remover filtros
+      </button>
+      <div>
+        {selectedFilters && selectedFilters.map((filter, index) => (
+          <p key={ index } data-testid="filter">
+            {`${filter.column} ${filter.comparison} ${filter.value}`}
+            {' '}
+            <button
+              id={ index }
+              onClick={ removeSelectedFilter }
+            >
+              remove filter
+            </button>
+          </p>))}
+      </div>
     </form>
   );
 }
