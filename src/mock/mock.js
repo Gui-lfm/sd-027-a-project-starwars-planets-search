@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 const mockApi = {
   count: 60,
   next: 'https://swapi.dev/api/planets/?page=2',
