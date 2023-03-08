@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import App from "../App";
 import Provider from "../context/StarWarsProvider";
 import mockApi from "../mock/mock";
@@ -31,7 +31,6 @@ describe("Testes da aplicação", () => {
     const columnSort = screen.getByTestId("column-sort");
     const descSort = screen.getByTestId("column-sort-input-desc");
     const ascSort = screen.getByTestId("column-sort-input-asc");
-    const sortBtn = screen.getByTestId("column-sort-button");
     const btnRemoveAllFilters = screen.getByTestId("button-remove-filters");
 
     expect(filterByName).toBeInTheDocument();
@@ -40,7 +39,6 @@ describe("Testes da aplicação", () => {
     expect(btnFilter).toBeInTheDocument();
     expect(descSort).toBeInTheDocument();
     expect(ascSort).toBeInTheDocument();
-    expect(sortBtn).toBeInTheDocument();
     expect(columnSort).toBeInTheDocument();
     expect(columnFilter).toBeInTheDocument();
     expect(btnRemoveAllFilters).toBeInTheDocument();
@@ -60,17 +58,155 @@ describe("Testes da aplicação", () => {
     expect(planetList.length).toBe(10);
   });
   it("Ao digitar um nome no campo de busca, a lista é filtrada", async () => {
-    const planetTest = "Hoth";
+    const nameTest = "oo";
 
     render(
       <Provider>
         <App />
       </Provider>
     );
-    const planetList = await screen.findAllByTestId("planet-name");
-    const filterByName = screen.getByTestId("name-filter");
-    userEvent.type(filterByName, planetTest);
 
-    // await waitFor(() => expect(planetList).toHaveLength(1));
+    const filterByName = screen.getByTestId("name-filter");
+    userEvent.type(filterByName, nameTest);
+
+    expect(await screen.findAllByTestId("planet-name")).toHaveLength(2);
   });
+  it("Ao selecionar um filtro numérico, a tabela é alterada", async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+
+    //orbital_period maior que 400
+
+    const columnInput = "orbital_period";
+    const comparisonInput = "maior que";
+    const valueInput = "400";
+
+    const columnFilter = screen.getByTestId("column-filter");
+    const comparisonFilter = screen.getByTestId("comparison-filter");
+    const valueFilter = screen.getByTestId("value-filter");
+    const btnFilter = screen.getByTestId("button-filter");
+
+    userEvent.selectOptions(columnFilter, columnInput);
+    userEvent.selectOptions(comparisonFilter, comparisonInput);
+    userEvent.type(valueFilter, valueInput);
+    userEvent.click(btnFilter);
+
+    expect(await screen.findAllByTestId("planet-name")).toHaveLength(5);
+  });
+  it("A aplicação permite múltiplos filtros que não podem ser repetidos", async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+    //orbital_period maior que 400
+    
+    const columnInput = "orbital_period";
+    const comparisonInput = "maior que";
+    const valueInput = "400";
+    
+    // Diameter menor que 10000.
+    
+    const columnInput2 = "diameter";
+    const comparisonInput2 = "menor que";
+    const valueInput2 = "10000";
+
+    const columnFilter = screen.getByTestId("column-filter");
+    const comparisonFilter = screen.getByTestId("comparison-filter");
+    const valueFilter = screen.getByTestId("value-filter");
+    const btnFilter = screen.getByTestId("button-filter");
+
+    // primeiro filtro aplicado
+
+    userEvent.selectOptions(columnFilter, columnInput);
+    userEvent.selectOptions(comparisonFilter, comparisonInput);
+    userEvent.type(valueFilter, valueInput);
+    userEvent.click(btnFilter);
+
+    // segundo filtro aplicado 
+    
+    userEvent.selectOptions(columnFilter, columnInput2);
+    userEvent.selectOptions(comparisonFilter, comparisonInput2);
+    userEvent.type(valueFilter, valueInput2);
+    userEvent.click(btnFilter);
+
+    expect(await screen.findAllByTestId("planet-name")).toHaveLength(2);
+    expect(await screen.findAllByTestId("filter")).toHaveLength(2);
+    const options = await within(columnFilter).findAllByRole('option');
+    expect(options).toHaveLength(3);
+  });
+
+  it('É possivel remover um filtro criado pelo usuário', async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+    
+    const columnInput = "orbital_period";
+    const comparisonInput = "maior que";
+    const valueInput = "400";
+
+    const columnFilter = screen.getByTestId("column-filter");
+    const comparisonFilter = screen.getByTestId("comparison-filter");
+    const valueFilter = screen.getByTestId("value-filter");
+    const btnFilter = screen.getByTestId("button-filter");
+
+    userEvent.selectOptions(columnFilter, columnInput);
+    userEvent.selectOptions(comparisonFilter, comparisonInput);
+    userEvent.type(valueFilter, valueInput);
+    userEvent.click(btnFilter);
+
+    const filter = await screen.findByTestId("filter");
+    expect(filter).toBeInTheDocument();
+    
+    const removeFilterBtn = within(filter).getByRole('button', {name: 'remove filter'});
+    userEvent.click(removeFilterBtn);
+    expect(await screen.findAllByTestId("planet-name")).toHaveLength(10);
+  })
+
+  it('É possível remover todos os filtros aplicados', async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+    //orbital_period maior que 400
+    
+    const columnInput = "orbital_period";
+    const comparisonInput = "maior que";
+    const valueInput = "400";
+    
+    // Diameter menor que 10000.
+    
+    const columnInput2 = "diameter";
+    const comparisonInput2 = "menor que";
+    const valueInput2 = "10000";
+
+    const columnFilter = screen.getByTestId("column-filter");
+    const comparisonFilter = screen.getByTestId("comparison-filter");
+    const valueFilter = screen.getByTestId("value-filter");
+    const btnFilter = screen.getByTestId("button-filter");
+
+    // primeiro filtro aplicado
+
+    userEvent.selectOptions(columnFilter, columnInput);
+    userEvent.selectOptions(comparisonFilter, comparisonInput);
+    userEvent.type(valueFilter, valueInput);
+    userEvent.click(btnFilter);
+
+    // segundo filtro aplicado 
+    
+    userEvent.selectOptions(columnFilter, columnInput2);
+    userEvent.selectOptions(comparisonFilter, comparisonInput2);
+    userEvent.type(valueFilter, valueInput2);
+    userEvent.click(btnFilter);
+
+    const btnRemoveAllFilters = screen.getByTestId("button-remove-filters");
+    userEvent.click(btnRemoveAllFilters);
+    expect(await screen.findAllByTestId("planet-name")).toHaveLength(10);
+  })
 });

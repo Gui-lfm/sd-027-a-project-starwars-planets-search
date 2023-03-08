@@ -1,4 +1,11 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+const oneStandard = '1 standard';
+const filmOne = 'https://swapi.dev/api/films/1/';
+const filmTwo = 'https://swapi.dev/api/films/2/';
+const filmThree = 'https://swapi.dev/api/films/3/';
+const filmFour = 'https://swapi.dev/api/films/4/';
+const filmFive = 'https://swapi.dev/api/films/5/';
+const filmSix = 'https://swapi.dev/api/films/6/';
+
 const mockApi = {
   count: 60,
   next: 'https://swapi.dev/api/planets/?page=2',
@@ -10,7 +17,7 @@ const mockApi = {
       orbital_period: '304',
       diameter: '10465',
       climate: 'arid',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'desert',
       surface_water: '1',
       population: '200000',
@@ -27,11 +34,11 @@ const mockApi = {
         'https://swapi.dev/api/people/62/',
       ],
       films: [
-        'https://swapi.dev/api/films/1/',
-        'https://swapi.dev/api/films/3/',
-        'https://swapi.dev/api/films/4/',
-        'https://swapi.dev/api/films/5/',
-        'https://swapi.dev/api/films/6/',
+        filmOne,
+        filmThree,
+        filmFour,
+        filmFive,
+        filmSix,
       ],
       created: '2014-12-09T13:50:49.641000Z',
       edited: '2014-12-20T20:58:18.411000Z',
@@ -43,7 +50,7 @@ const mockApi = {
       orbital_period: '364',
       diameter: '12500',
       climate: 'temperate',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'grasslands, mountains',
       surface_water: '40',
       population: '2000000000',
@@ -53,8 +60,8 @@ const mockApi = {
         'https://swapi.dev/api/people/81/',
       ],
       films: [
-        'https://swapi.dev/api/films/1/',
-        'https://swapi.dev/api/films/6/',
+        filmOne,
+        filmSix,
       ],
       created: '2014-12-10T11:35:48.479000Z',
       edited: '2014-12-20T20:58:18.420000Z',
@@ -66,13 +73,13 @@ const mockApi = {
       orbital_period: '4818',
       diameter: '10200',
       climate: 'temperate, tropical',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'jungle, rainforests',
       surface_water: '8',
       population: '1000',
       residents: [],
       films: [
-        'https://swapi.dev/api/films/1/',
+        filmOne,
       ],
       created: '2014-12-10T11:37:19.144000Z',
       edited: '2014-12-20T20:58:18.421000Z',
@@ -90,7 +97,7 @@ const mockApi = {
       population: 'unknown',
       residents: [],
       films: [
-        'https://swapi.dev/api/films/2/',
+        filmTwo,
       ],
       created: '2014-12-10T11:39:13.934000Z',
       edited: '2014-12-20T20:58:18.423000Z',
@@ -108,9 +115,9 @@ const mockApi = {
       population: 'unknown',
       residents: [],
       films: [
-        'https://swapi.dev/api/films/2/',
-        'https://swapi.dev/api/films/3/',
-        'https://swapi.dev/api/films/6/',
+        filmTwo,
+        filmThree,
+        filmSix,
       ],
       created: '2014-12-10T11:42:22.590000Z',
       edited: '2014-12-20T20:58:18.425000Z',
@@ -130,7 +137,7 @@ const mockApi = {
         'https://swapi.dev/api/people/26/',
       ],
       films: [
-        'https://swapi.dev/api/films/2/',
+        filmTwo,
       ],
       created: '2014-12-10T11:43:55.240000Z',
       edited: '2014-12-20T20:58:18.427000Z',
@@ -150,7 +157,7 @@ const mockApi = {
         'https://swapi.dev/api/people/30/',
       ],
       films: [
-        'https://swapi.dev/api/films/3/',
+        filmThree,
       ],
       created: '2014-12-10T11:50:29.349000Z',
       edited: '2014-12-20T20:58:18.429000Z',
@@ -162,7 +169,7 @@ const mockApi = {
       orbital_period: '312',
       diameter: '12120',
       climate: 'temperate',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'grassy hills, swamps, forests, mountains',
       surface_water: '12',
       population: '4500000000',
@@ -180,10 +187,10 @@ const mockApi = {
         'https://swapi.dev/api/people/66/',
       ],
       films: [
-        'https://swapi.dev/api/films/3/',
-        'https://swapi.dev/api/films/4/',
-        'https://swapi.dev/api/films/5/',
-        'https://swapi.dev/api/films/6/',
+        filmThree,
+        filmFour,
+        filmFive,
+        filmSix,
       ],
       created: '2014-12-10T11:52:31.066000Z',
       edited: '2014-12-20T20:58:18.430000Z',
@@ -195,7 +202,7 @@ const mockApi = {
       orbital_period: '368',
       diameter: '12240',
       climate: 'temperate',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'cityscape, mountains',
       surface_water: 'unknown',
       population: '1000000000000',
@@ -205,10 +212,10 @@ const mockApi = {
         'https://swapi.dev/api/people/74/',
       ],
       films: [
-        'https://swapi.dev/api/films/3/',
-        'https://swapi.dev/api/films/4/',
-        'https://swapi.dev/api/films/5/',
-        'https://swapi.dev/api/films/6/',
+        filmThree,
+        filmFour,
+        filmFive,
+        filmSix,
       ],
       created: '2014-12-10T11:54:13.921000Z',
       edited: '2014-12-20T20:58:18.432000Z',
@@ -220,7 +227,7 @@ const mockApi = {
       orbital_period: '463',
       diameter: '19720',
       climate: 'temperate',
-      gravity: '1 standard',
+      gravity: oneStandard,
       terrain: 'ocean',
       surface_water: '100',
       population: '1000000000',
@@ -230,7 +237,7 @@ const mockApi = {
         'https://swapi.dev/api/people/73/',
       ],
       films: [
-        'https://swapi.dev/api/films/5/',
+        filmFive,
       ],
       created: '2014-12-10T12:45:06.577000Z',
       edited: '2014-12-20T20:58:18.434000Z',

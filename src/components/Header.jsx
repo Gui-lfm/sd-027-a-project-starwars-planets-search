@@ -93,14 +93,14 @@ function Header() {
         data-testid="column-sort-input-desc"
         onChange={ handleSortOrder }
       />
-      <button
+      {/* <button
         data-testid="column-sort-button"
         onClick={ (e) => {
           e.preventDefault();
         } }
       >
         Ordenar
-      </button>
+      </button> */}
       <button
         data-testid="button-remove-filters"
         onClick={ removeAllFilters }
